@@ -41,7 +41,7 @@ use Facebook\GraphNode\GraphUser;
 use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\TestCase;
 
-class Test extends TestCase
+class FacebookTest extends TestCase
 {
     protected $config = [
         'app_id' => '1337',
