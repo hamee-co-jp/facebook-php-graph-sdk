@@ -163,12 +163,12 @@ class ClientTest extends TestCase
 
         $this->assertEquals(Client::BASE_GRAPH_VIDEO_URL, $url);
         $this->assertEquals('POST', $method);
-        $this->assertContains('multipart/form-data; boundary=', $headers['Content-Type']);
-        $this->assertContains('Content-Disposition: form-data; name="batch"', $body);
-        $this->assertContains('Content-Disposition: form-data; name="include_headers"', $body);
-        $this->assertContains('"name":0,"attached_files":', $body);
-        $this->assertContains('"name":1,"attached_files":', $body);
-        $this->assertContains('"; filename="foo.txt"', $body);
+        $this->assertStringContainsString('multipart/form-data; boundary=', $headers['Content-Type']);
+        $this->assertStringContainsString('Content-Disposition: form-data; name="batch"', $body);
+        $this->assertStringContainsString('Content-Disposition: form-data; name="include_headers"', $body);
+        $this->assertStringContainsString('"name":0,"attached_files":', $body);
+        $this->assertStringContainsString('"name":1,"attached_files":', $body);
+        $this->assertStringContainsString('"; filename="foo.txt"', $body);
     }
 
     public function testARequestOfParamsWillBeUrlEncoded()
@@ -189,7 +189,7 @@ class ClientTest extends TestCase
 
         $headersSent = $response->getRequest()->getHeaders();
 
-        $this->assertContains('multipart/form-data; boundary=', $headersSent['Content-Type']);
+        $this->assertStringContainsString('multipart/form-data; boundary=', $headersSent['Content-Type']);
     }
 
     public function testARequestValidatesTheAccessTokenWhenOneIsNotProvided()
