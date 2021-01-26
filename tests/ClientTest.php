@@ -159,7 +159,7 @@ class ClientTest extends TestCase
         $fbBatchRequest = new BatchRequest($this->fbApp, $fbRequests);
         $fbBatchRequest->prepareRequestsForBatch();
 
-        list($url, $method, $headers, $body) = $this->fbClient->prepareRequestMessage($fbBatchRequest);
+        [$url, $method, $headers, $body] = $this->fbClient->prepareRequestMessage($fbBatchRequest);
 
         $this->assertEquals(Client::BASE_GRAPH_VIDEO_URL, $url);
         $this->assertEquals('POST', $method);
@@ -192,11 +192,9 @@ class ClientTest extends TestCase
         $this->assertContains('multipart/form-data; boundary=', $headersSent['Content-Type']);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
     public function testARequestValidatesTheAccessTokenWhenOneIsNotProvided()
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $fbRequest = new Request($this->fbApp, null, 'GET', '/foo');
         $this->fbClient->sendRequest($fbRequest);
     }

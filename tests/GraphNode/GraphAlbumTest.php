@@ -32,6 +32,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 class GraphAlbumTest extends TestCase
 {
 
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var ObjectProphecy|Response
      */

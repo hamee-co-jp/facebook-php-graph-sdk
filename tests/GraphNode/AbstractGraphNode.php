@@ -29,6 +29,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 abstract class AbstractGraphNode extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var ObjectProphecy|Response
      */

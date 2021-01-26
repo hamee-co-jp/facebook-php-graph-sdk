@@ -69,7 +69,7 @@ class RedirectLoginHelperTest extends TestCase
             'scope' => implode(',', $scope),
         ];
         foreach ($params as $key => $value) {
-            $this->assertContains($key . '=' . urlencode($value), $loginUrl);
+            $this->assertStringContainsString($key . '=' . urlencode($value), $loginUrl);
         }
     }
 
@@ -84,7 +84,7 @@ class RedirectLoginHelperTest extends TestCase
             'access_token' => 'foo_token',
         ];
         foreach ($params as $key => $value) {
-            $this->assertContains($key . '=' . urlencode($value), $logoutUrl);
+            $this->assertStringContainsString($key . '=' . urlencode($value), $logoutUrl);
         }
     }
 

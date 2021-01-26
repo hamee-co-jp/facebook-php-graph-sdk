@@ -50,11 +50,9 @@ class FileTest extends TestCase
         $this->assertEquals('is a text file', $fileContents);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
     public function testTryingToOpenAFileThatDoesntExistsThrows()
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         new File('does_not_exist.file');
     }
 }

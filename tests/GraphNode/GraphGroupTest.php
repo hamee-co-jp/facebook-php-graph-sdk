@@ -31,6 +31,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class GraphGroupTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var ObjectProphecy|Response
      */

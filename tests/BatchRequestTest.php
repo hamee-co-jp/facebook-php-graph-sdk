@@ -79,31 +79,25 @@ class BatchRequestTest extends TestCase
         $this->assertRequestContainsAppAndToken($request, $customApp, 'foo_token');
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
     public function testWillThrowWhenNoThereIsNoAppFallback()
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $batchRequest = new BatchRequest();
 
         $batchRequest->addFallbackDefaults(new Request(null, 'foo_token'));
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
     public function testWillThrowWhenNoThereIsNoAccessTokenFallback()
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $request = new BatchRequest();
 
         $request->addFallbackDefaults(new Request($this->app));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testAnInvalidTypeGivenToAddWillThrow()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $request = new BatchRequest();
 
         $request->add('foo');
@@ -167,21 +161,17 @@ class BatchRequestTest extends TestCase
         $this->assertRequestsMatch($requests, $formattedRequests);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
     public function testAZeroRequestCountWithThrow()
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $batchRequest = new BatchRequest($this->app, [], 'foo_token');
 
         $batchRequest->validateBatchRequestCount();
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
     public function testMoreThanFiftyRequestsWillThrow()
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $batchRequest = $this->createBatchRequest();
 
         $this->createAndAppendRequestsTo($batchRequest, 51);

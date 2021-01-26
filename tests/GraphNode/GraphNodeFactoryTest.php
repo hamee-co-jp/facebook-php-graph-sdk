@@ -65,11 +65,9 @@ class GraphNodeFactoryTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
     public function testANonGraphNodeResponseWillThrow()
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $data = '{"data":[{"id":"123","name":"foo"},{"id":"1337","name":"bar"}]}';
         $res = new Response($this->request, $data);
 
@@ -88,11 +86,9 @@ class GraphNodeFactoryTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
     public function testANonGraphEdgeResponseWillThrow()
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $data = '{"id":"123","name":"foo"}';
         $res = new Response($this->request, $data);
 
@@ -111,11 +107,9 @@ class GraphNodeFactoryTest extends TestCase
         $this->assertFalse($shouldFail, 'Expected the given array to not be castable as a GraphEdge.');
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
     public function testInvalidSubClassesWillThrow()
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         GraphNodeFactory::validateSubclass('FooSubClass');
     }
 

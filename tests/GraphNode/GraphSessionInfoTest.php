@@ -29,6 +29,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class GraphSessionInfoTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /**
      * @var ObjectProphecy|Response
      */

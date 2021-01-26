@@ -78,11 +78,9 @@ class ResumableUploaderTest extends TestCase
         $this->assertTrue($finalResponse);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\ResponseException
-     */
     public function testStartWillLetErrorResponsesThrow()
     {
+        $this->expectException(\Facebook\Exception\ResponseException::class);
         $this->graphApi->failOnStart();
         $uploader = new ResumableUploader($this->fbApp, $this->client, 'access_token', 'v2.4');
 
