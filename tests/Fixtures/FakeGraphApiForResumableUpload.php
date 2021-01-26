@@ -32,69 +32,69 @@ class FakeGraphApiForResumableUpload implements HttpClient
     public $transferCount = 0;
     private $respondWith = 'SUCCESS';
 
-    public function failOnStart()
-    {
-        $this->respondWith = 'FAIL_ON_START';
+public function failOnStart()
+{
+    $this->respondWith = 'FAIL_ON_START';
+}
+
+public function failOnTransfer()
+{
+    $this->respondWith = 'FAIL_ON_TRANSFER';
+}
+
+public function sendRequest(RequestInterface $request)
+{
+    $body = $request->getBody()->__toString();
+    // Could be start, transfer or finish
+    if (str_contains($body, 'transfer')) {
+        return $this->respondTransfer();
+    } elseif (str_contains($body, 'finish')) {
+        return $this->respondFinish();
     }
 
-    public function failOnTransfer()
-    {
-        $this->respondWith = 'FAIL_ON_TRANSFER';
-    }
+    return $this->respondStart();
+}
 
-    public function sendRequest(RequestInterface $request)
-    {
-        $body = $request->getBody()->__toString();
-        // Could be start, transfer or finish
-        if (str_contains($body, 'transfer')) {
-            return $this->respondTransfer();
-        } elseif (str_contains($body, 'finish')) {
-            return $this->respondFinish();
-        }
-
-        return $this->respondStart();
-    }
-
-    private function respondStart()
-    {
-        if ($this->respondWith == 'FAIL_ON_START') {
-            return new Response(
-                500,
-                ['Foo' => 'Bar'],
-                '{"error":{"message":"Error validating access token: Session has expired on Monday, '.
-                '10-Aug-15 01:00:00 PDT. The current time is Monday, 10-Aug-15 01:14:23 PDT.",'.
-                '"type":"OAuthException","code":190,"error_subcode":463}}'
-            );
-        }
-
+private function respondStart()
+{
+    if ($this->respondWith == 'FAIL_ON_START') {
         return new Response(
-            200,
+            500,
             ['Foo' => 'Bar'],
-            '{"video_id":"1337","start_offset":"0","end_offset":"20","upload_session_id":"42"}'
+            '{"error":{"message":"Error validating access token: Session has expired on Monday, '.
+            '10-Aug-15 01:00:00 PDT. The current time is Monday, 10-Aug-15 01:14:23 PDT.",'.
+            '"type":"OAuthException","code":190,"error_subcode":463}}'
         );
     }
 
-    private function respondTransfer()
-    {
-        if ($this->respondWith == 'FAIL_ON_TRANSFER') {
-            return new Response(
-                500,
-                ['Foo' => 'Bar'],
-                '{"error":{"message":"There was a problem uploading your video. Please try uploading it again.",'.
-                '"type":"ApiException","code":6000,"error_subcode":1363019}}'
-            );
-        }
+    return new Response(
+        200,
+        ['Foo' => 'Bar'],
+        '{"video_id":"1337","start_offset":"0","end_offset":"20","upload_session_id":"42"}'
+    );
+}
 
-        $data = match ($this->transferCount) {
-            0 => ['start_offset' => 20, 'end_offset' => 40],
-            1 => ['start_offset' => 40, 'end_offset' => 50],
-            default => ['start_offset' => 50, 'end_offset' => 50],
-        };
+private function respondTransfer()
+{
+    if ($this->respondWith == 'FAIL_ON_TRANSFER') {
+        return new Response(
+            500,
+            ['Foo' => 'Bar'],
+            '{"error":{"message":"There was a problem uploading your video. Please try uploading it again.",'.
+            '"type":"ApiException","code":6000,"error_subcode":1363019}}'
+        );
+    }
+
+    $data = match($this->transferCount) {
+        0 => ['start_offset' => 20, 'end_offset' => 40],
+        1 => ['start_offset' => 40, 'end_offset' => 50],
+    default => ['start_offset' => 50, 'end_offset' => 50],
+    };
 
         $this->transferCount++;
 
         return new Response(200, ['Foo' => 'Bar'], json_encode($data));
-    }
+        }
 
     private function respondFinish()
     {
