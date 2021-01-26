@@ -25,8 +25,9 @@
     },
     "require-dev": {
         "php-http/guzzle6-adapter": "^1.0",
+        "phpspec/prophecy-phpunit": "@stable",
         "phpunit/phpunit": "^9.3",
-        "phpspec/prophecy-phpunit": "@stable"
+        "squizlabs/php_codesniffer": "@stable"
     },
     "autoload": {
         "psr-4": {
