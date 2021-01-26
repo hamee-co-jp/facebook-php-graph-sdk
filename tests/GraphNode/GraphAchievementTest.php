@@ -58,7 +58,7 @@ class GraphAchievementTest extends AbstractGraphNode
     public function testNoFeedStoryIsBoolean()
     {
         $dataFromGraph = [
-            'no_feed_story' => (rand(0, 1) == 1)
+            'no_feed_story' => (random_int(0, 1) == 1)
         ];
 
         $factory = $this->makeFactoryWithData($dataFromGraph);
@@ -66,7 +66,7 @@ class GraphAchievementTest extends AbstractGraphNode
 
         $isNoFeedStory = $graphNode->isNoFeedStory();
 
-        $this->assertInternalType('bool', $isNoFeedStory);
+        $this->assertIsBool($isNoFeedStory);
     }
 
     public function testDatesGetCastToDateTime()

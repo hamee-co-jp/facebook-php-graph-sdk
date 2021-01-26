@@ -41,7 +41,7 @@ class GraphEdgeTest extends TestCase
         'previous' => 'https://graph.facebook.com/v7.12/998899/photos?pretty=0&limit=25&before=foo_before_cursor',
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $app = new Application('123', 'foo_app_secret');
         $this->request = new Request(
@@ -55,11 +55,9 @@ class GraphEdgeTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
     public function testNonGetRequestsWillThrow()
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $this->request->setMethod('POST');
         $graphEdge = new GraphEdge($this->request);
         $graphEdge->validateForPagination();
@@ -160,7 +158,8 @@ class GraphEdgeTest extends TestCase
     public function testTheKeysFromTheCollectionCanBeReturned()
     {
         $graphEdge = new GraphEdge(
-            $this->request, [
+            $this->request,
+            [
                 'key1' => 'foo',
                 'key2' => 'bar',
                 'key3' => 'baz',

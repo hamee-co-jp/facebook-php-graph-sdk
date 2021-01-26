@@ -33,7 +33,7 @@ class ApplicationTest extends TestCase
      */
     private $app;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->app = new Application('id', 'secret');
     }
@@ -65,11 +65,9 @@ class ApplicationTest extends TestCase
         $this->assertEquals('secret', $newApp->getSecret());
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
     public function testOverflowIntegersWillThrow()
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         new Application(PHP_INT_MAX + 1, "foo");
     }
 

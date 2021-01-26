@@ -1,0 +1,54 @@
+version: 2.0
+jobs:
+  build:
+    docker:
+      - image: circleci/php:8.0-apache-buster
+
+    steps:
+      - checkout
+
+      - run:
+          command: composer update --no-interaction --prefer-dist
+          name: Install Dependency
+          
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  static_analysis:
+    docker:
+      - image: circleci/php:8.0-apache-buster
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          command: vendor/bin/phpcs -- -n src tests
+          name: Run PHPCS
+
+  unit_test:
+    docker:
+      - image: circleci/php:8.0-apache-buster
+                
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          # TODO: 後でちゃんと整えて、nightlyビルドでintegrationも出来るようにできると良いかも
+          command: vendor/bin/phpunit --exclude-group integration
+          name: Run PHPUnit
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - static_analysis:
+          requires:
+            - build
+      - unit_test:
+          requires:
+            - build

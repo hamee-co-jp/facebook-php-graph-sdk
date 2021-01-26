@@ -41,7 +41,7 @@ use Facebook\GraphNode\GraphUser;
 use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\TestCase;
 
-class Test extends TestCase
+class FacebookTest extends TestCase
 {
     protected $config = [
         'app_id' => '1337',
@@ -49,11 +49,9 @@ class Test extends TestCase
         'default_graph_version' => 'v0.0',
     ];
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
     public function testInstantiatingWithoutAppIdThrows()
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         // unset value so there is no fallback to test expected Exception
         putenv(Facebook::APP_ID_ENV_NAME.'=');
         $config = [
@@ -63,11 +61,9 @@ class Test extends TestCase
         new Facebook($config);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
     public function testInstantiatingWithoutAppSecretThrows()
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         // unset value so there is no fallback to test expected Exception
         putenv(Facebook::APP_SECRET_ENV_NAME.'=');
         $config = [
@@ -77,11 +73,9 @@ class Test extends TestCase
         new Facebook($config);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInstantiatingWithoutDefaultGraphVersionThrows()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $config = [
             'app_id' => 'foo_id',
             'app_secret' => 'foo_secret',
@@ -89,32 +83,27 @@ class Test extends TestCase
         new Facebook($config);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testSettingAnInvalidHttpClientTypeThrows()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $config = array_merge($this->config, [
             'http_client' => 'foo_client',
         ]);
         new Facebook($config);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testSettingAnInvalidHttpClientClassThrows()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $config = array_merge($this->config, [
             'http_client' => new \stdClass(),
         ]);
         new Facebook($config);
     }
-    /**
-     * @expectedException \InvalidArgumentException
-     */
+
     public function testSettingAnInvalidPersistentDataHandlerThrows()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $config = array_merge($this->config, [
             'persistent_data_handler' => 'foo_handler',
         ]);
@@ -133,11 +122,9 @@ class Test extends TestCase
         );
     }
 
-    /**
-     * @expectedException Error
-     */
     public function testSettingAnInvalidUrlHandlerThrows()
     {
+        $this->expectException(\Error::class);
         $config = array_merge($this->config, [
             'url_detection_handler' => 'foo_handler',
         ]);
@@ -170,11 +157,9 @@ class Test extends TestCase
         $this->assertEquals('bar_token', (string)$accessToken);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testSettingAnAccessThatIsNotStringOrAccessTokenThrows()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $config = array_merge($this->config, [
             'default_access_token' => 123,
         ]);
@@ -278,7 +263,7 @@ class Test extends TestCase
 
         $lastResponse = $fb->getLastResponse();
         $this->assertInstanceOf(Response::class, $lastResponse);
-        $this->assertEquals(1337, $lastResponse->getHttpStatusCode());
+        $this->assertEquals(200, $lastResponse->getHttpStatusCode());
     }
 
     public function testCanGetSuccessfulTransferWithMaxTries()
@@ -294,11 +279,9 @@ class Test extends TestCase
         ], $response);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\ResponseException
-     */
     public function testMaxingOutRetriesWillThrow()
     {
+        $this->expectException(\Facebook\Exception\ResponseException::class);
         $client = new FakeGraphApiForResumableUpload();
         $client->failOnTransfer();
 
